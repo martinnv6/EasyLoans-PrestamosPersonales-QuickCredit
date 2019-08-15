@@ -18,10 +18,10 @@ namespace QuickCreditApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment enviroment)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
-            Env = enviroment;
+            Env = environment;
         }
 
         public IConfiguration Configuration { get; }
