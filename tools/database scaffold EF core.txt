@@ -1,0 +1,1 @@
+PM> Scaffold-DbContext "Server=W104N5ZSQ2;Database=qcdb;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\Entities

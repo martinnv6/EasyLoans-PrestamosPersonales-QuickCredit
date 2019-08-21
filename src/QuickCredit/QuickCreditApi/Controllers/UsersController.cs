@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuickCreditApi.Models.Entities;
+using QuickCreditApi.Models.ViewModels;
 using QuickCreditApi.Services;
 
 namespace QuickCreditApi.Controllers
@@ -16,10 +17,11 @@ namespace QuickCreditApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public UsersController(IUserService userService)
+        private readonly qcdbContext _context;
+        public UsersController(IUserService userService, qcdbContext context)
         {
             _userService = userService;
+            _context = context;
         }
 
         /// <summary>
@@ -32,9 +34,9 @@ namespace QuickCreditApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DefaultApiConventions), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Authenticate([FromBody]User userParam)
+        public IActionResult Authenticate([FromBody]UserTokenViewModel userParam)
         {
-            var user = _userService.Authenticate(userParam.Username, userParam.Password);
+            var user = _userService.Authenticate(userParam.Account, userParam.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -42,43 +44,8 @@ namespace QuickCreditApi.Controllers
             return Ok(user);
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var users = _userService.GetAll();
-            return Ok(users);
-        }
+        
 
-        // GET: api/Users
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        // GET: api/Users/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Users
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+       
     }
 }

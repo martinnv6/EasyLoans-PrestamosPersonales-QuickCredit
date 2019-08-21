@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using QuickCreditApi.Helpers;
 using QuickCreditApi.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using QuickCreditApi.Models;
+using QuickCreditApi.Models.Entities;
 
 namespace QuickCreditApi
 {
@@ -97,7 +100,8 @@ namespace QuickCreditApi
                 c.IncludeXmlComments(xmlPath);
             });
 
-
+            var connection = @"Server=W104N5ZSQ2;Database=qcdb;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<qcdbContext>(options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
