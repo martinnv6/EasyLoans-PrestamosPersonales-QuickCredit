@@ -23,11 +23,11 @@ using QuickCreditApi.Models.ViewModels;
 
 namespace QuickCreditApi.Services
 {
-    public interface IUserService
+    public interface ILoginService
     {
         UserTokenViewModel Authenticate(string username, string password);
     }
-    public class UserService : IUserService
+    public class LoginService : ILoginService
     {
         //private readonly List<UserAccount> _users = new List<UserAccount>
         //{
@@ -37,7 +37,7 @@ namespace QuickCreditApi.Services
         private readonly AppSettings _appSettings;
         private readonly qcdbContext _context;
 
-        public UserService(IOptions<AppSettings> appSettings, qcdbContext context)
+        public LoginService(IOptions<AppSettings> appSettings, qcdbContext context)
         {
             _context = context;
             _appSettings = appSettings.Value;

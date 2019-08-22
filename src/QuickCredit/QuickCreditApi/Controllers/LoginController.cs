@@ -14,13 +14,13 @@ namespace QuickCreditApi.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class LoginController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly ILoginService _loginService;
         private readonly qcdbContext _context;
-        public UsersController(IUserService userService, qcdbContext context)
+        public LoginController(ILoginService loginService, qcdbContext context)
         {
-            _userService = userService;
+            _loginService = loginService;
             _context = context;
         }
 
@@ -36,7 +36,7 @@ namespace QuickCreditApi.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Authenticate([FromBody]UserTokenViewModel userParam)
         {
-            var user = _userService.Authenticate(userParam.Account, userParam.Password);
+            var user = _loginService.Authenticate(userParam.Account, userParam.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });

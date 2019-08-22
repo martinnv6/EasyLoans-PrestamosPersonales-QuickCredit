@@ -31,6 +31,9 @@ namespace QuickCreditApi.Controllers
 
         // GET: api/UserAccounts/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<UserAccount>> GetUserAccount(int id)
         {
             var userAccount = await _context.UserAccount.FindAsync(id);
@@ -45,6 +48,10 @@ namespace QuickCreditApi.Controllers
 
         // PUT: api/UserAccounts/5
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> PutUserAccount(int id, UserAccount userAccount)
         {
             if (id != userAccount.Id)
@@ -75,6 +82,9 @@ namespace QuickCreditApi.Controllers
 
         // POST: api/UserAccounts
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<UserAccount>> PostUserAccount(UserAccount userAccount)
         {
             _context.UserAccount.Add(userAccount);
@@ -84,7 +94,7 @@ namespace QuickCreditApi.Controllers
             }
             catch (DbUpdateException)
             {
-                if (UserAccountExists(userAccount.Id))
+                if (UserAccountExists(userAccount.Id) || UserAccountExists((userAccount.Account)))
                 {
                     return Conflict();
                 }
@@ -116,6 +126,11 @@ namespace QuickCreditApi.Controllers
         private bool UserAccountExists(int id)
         {
             return _context.UserAccount.Any(e => e.Id == id);
+        }
+
+        private bool UserAccountExists(string account)
+        {
+            return _context.UserAccount.Any(e => e.Account == account);
         }
     }
 }
